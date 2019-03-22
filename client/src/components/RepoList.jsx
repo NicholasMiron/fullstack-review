@@ -1,12 +1,16 @@
 import React from 'react';
 
 const RepoList = (props) => {
-  
-  const renderRepos = props.repos.map(repo => {
-    return<li>
+  let style = {
+    'textDecorationLine': 'none',
+    'color': 'black'
+  }
+  const renderRepos = props.repos.map((repo, i) => {
+    
+    return<li key={i}>
             <h2>Repo: {repo.name}</h2>
             <p><b>Author: </b>{repo.full_name}</p>
-            <p><b>URL:</b> {repo.html_url}</p>
+            <p><b>URL:</b> <a style={style} href={repo.html_url}>{repo.html_url}</a></p>
             <p><b>Watchers:</b> {repo.watchers}</p>
           </li>
   })
