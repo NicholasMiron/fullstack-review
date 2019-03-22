@@ -17,8 +17,8 @@ app.post('/repos', function (req, res) {
         console.log('failed to got stuff');
       } else {
         console.log('Got Stuff')
+        res.end();
       }
-      res.end();
     });
   }
   // TODO - your code here!

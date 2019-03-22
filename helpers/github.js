@@ -27,6 +27,7 @@ let getReposByUsername = (username, cb) => {
       db.save(JSON.parse(body), (err) => {
         if (err) {
           console.log('Failed to save into db');
+          cb(err)
         } else {
           cb(null, 'success');
         }

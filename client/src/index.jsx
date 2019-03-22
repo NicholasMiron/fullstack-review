@@ -14,13 +14,20 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.getRepos();
+  }
+
+  getRepos() {
     $.ajax({
       type:'GET',
       url:'/repos',
-      success:(data) => this.setState({repos:data}, () => console.log(this.state.repos)),
-      failure: () => console.log('I failed')
+      success:(data) => {
+        this.setState({repos:data}, () => console.log(this.state.repos))
+      },
+      error: () => console.log('I failed')
     })
   }
+
 
   search (term) {
     console.log(`${term} was searched`);
@@ -31,11 +38,17 @@ class App extends React.Component {
     $.ajax({
       type:'post',
       url: '/repos',
-      dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify(options),
-      success: () => console.log('Search Sent'),
-      failre: (err) => console.error(err)
+      success: (data) => {
+        console.log('Search Sent')
+        this.getRepos();
+      },
+      error: (err) => {
+        console.log('error in ajax post');
+        console.log(err);
+      }
+
     })
   }
 
