@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import axios from 'axios';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -18,38 +20,34 @@ class App extends React.Component {
   }
 
   getRepos() {
-    $.ajax({
-      type:'GET',
-      url:'/repos',
-      success:(data) => {
-        this.setState({repos:data}, () => console.log(this.state.repos))
-      },
-      error: () => console.log('I failed')
+    axios.get('/repos')
+    .then(response => response.data)
+    .then((data) => {
+      console.log(data);
+      this.setState({repos: data}, () => {
+        console.log('Client: get request success');
+      });
+    })
+    .catch(err => {
+      console.log('Client: get request failed')
     })
   }
 
 
   search (term) {
     console.log(`${term} was searched`);
+    
     let options = {
-      username: term
+      'username': term
     }
-  
-    $.ajax({
-      type:'post',
-      url: '/repos',
-      contentType: 'application/json',
-      data: JSON.stringify(options),
-      success: (data) => {
-        console.log('Search Sent')
-        this.getRepos();
-      },
-      error: (err) => {
-        console.log('error in ajax post');
-        console.log(err);
-      }
-
+    
+    axios.post('/repos', options)
+    .then(response => {
+      console.log('Client: post request success')
+      this.getRepos();
     })
+    .catch(err => console.log('Client: post request failed'))
+   
   }
 
   render () {
