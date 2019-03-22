@@ -8,7 +8,7 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json({urlencoded: true}));
 
 app.post('/repos', function (req, res) {
-  console.log('request received in repos', req.body);
+  console.log('request received in repos');
   const username = req.body.username;
 
   if(username) {
@@ -39,9 +39,9 @@ app.get('/repos', function (req, res) {
   });
 });
 
-let port = 1128;
+const port = process.env.PORT || 1128;
 
-app.listen(port, function() {
+app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
 

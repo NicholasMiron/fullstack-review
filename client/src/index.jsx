@@ -23,7 +23,6 @@ class App extends React.Component {
     axios.get('/repos')
     .then(response => response.data)
     .then((data) => {
-      console.log(data);
       this.setState({repos: data}, () => {
         console.log('Client: get request success');
       });
@@ -32,8 +31,6 @@ class App extends React.Component {
       console.log('Client: get request failed')
     })
   }
-
-
   search (term) {
     console.log(`${term} was searched`);
     
