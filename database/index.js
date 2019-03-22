@@ -5,7 +5,8 @@ let repoSchema = mongoose.Schema({
   name: 'string',
   full_name: 'string',
   id: 'number',
-  html_url: 'string'
+  html_url: 'string',
+  watchers: 'number'
 });
 
 repoSchema.index({ pkey: 1 }, { unique: true });
@@ -41,7 +42,7 @@ let save = (repos, cb) => {
 
 let pull = (cb) => {
   console.log('made it to pull');
-  Repo.find().limit(25).then(results => {
+  Repo.find(null, null, {limit:25, sort:{watchers: -1}}).then(results => {
     cb(null, results);
   })
   .catch(err => {

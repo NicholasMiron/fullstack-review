@@ -17,7 +17,7 @@ class App extends React.Component {
     $.ajax({
       type:'GET',
       url:'/repos',
-      success:(data) => this.setState({repos:data}),
+      success:(data) => this.setState({repos:data}, () => console.log(this.state.repos)),
       failure: () => console.log('I failed')
     })
   }
@@ -42,8 +42,8 @@ class App extends React.Component {
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
-      <RepoList repos={this.state.repos}/>
       <Search onSearch={this.search.bind(this)}/>
+      <RepoList repos={this.state.repos}/>
     </div>)
   }
 }
