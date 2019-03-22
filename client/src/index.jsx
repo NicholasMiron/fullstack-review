@@ -13,6 +13,15 @@ class App extends React.Component {
 
   }
 
+  componentDidMount() {
+    $.ajax({
+      type:'GET',
+      url:'/repos',
+      success:(data) => this.setState({repos:data}),
+      failure: () => console.log('I failed')
+    })
+  }
+
   search (term) {
     console.log(`${term} was searched`);
     let options = {

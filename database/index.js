@@ -3,19 +3,27 @@ mongoose.connect('mongodb://localhost/fetcher');
 
 let repoSchema = mongoose.Schema({
   name: 'string',
-  full_name: {type:'string', unique: true},
+  full_name: 'string',
   id: 'number',
   html_url: 'string'
 });
 
+repoSchema.index({ pkey: 1 }, { unique: true });
+
+repoSchema.path('id').validate(function(value, done) {
+  this.model('Repo').count({ id: value }, function(err, count) {
+      if (err) {
+          return done(err);
+      } 
+      done(!count);
+  });
+}, 'repo already exists');
+
 let Repo = mongoose.model('Repo', repoSchema);
 
+
+
 let save = (repos, cb) => {
-  // TODO: Your code here
-  // This function should save a repo or repos to
-  // the MongoDB
-  // Data comes back as an array
-  // For looop??
   console.log('made it to save');
   for (aRepo of repos) {
     let oneRepo = new Repo(aRepo);
@@ -28,8 +36,18 @@ let save = (repos, cb) => {
     });
   }
 
-  // Repo.insertMany(repos);
   cb(null);
 }
 
+let pull = (cb) => {
+  console.log('made it to pull');
+  Repo.find().limit(25).then(results => {
+    cb(null, results);
+  })
+  .catch(err => {
+    cb(err);
+  })
+}
+
 module.exports.save = save;
+module.exports.pull = pull;
