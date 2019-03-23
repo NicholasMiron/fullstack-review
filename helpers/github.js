@@ -3,12 +3,8 @@ const config = require('../config.js');
 const db = require('../database/index.js');
 
 let getReposByUsername = (username, cb) => {
-  console.log('In getReposByUsernmae', username);
-  // TODO - Use the request module to request repos for a specific
-  // user from the github API
+  console.log('Helper: making request to github');
 
-  // The options object has been provided to help you out, 
-  // but you'll have to fill in the URL
   let options = {
     url: `https://api.github.com/users/${username}/repos`,
     headers: {
@@ -19,17 +15,16 @@ let getReposByUsername = (username, cb) => {
 
   request(options, (err, res, body) => {
     if (err) {
-      console.log('err', err);
+      console.log('Helper: request to github failed');
       cb(err);
     } else {
-      // console.log('body', body);
-      console.log('Got data back');
+      console.log('Helper: success getting repos from github');
       db.save(JSON.parse(body), (err) => {
         if (err) {
-          console.log('Failed to save into db');
+          console.log('Helper: Failed to save into db');
           cb(err)
         } else {
-          cb(null, 'success');
+          cb(null);
         }
       });
     }

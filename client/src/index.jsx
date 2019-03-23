@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
 import axios from 'axios';
@@ -31,6 +30,7 @@ class App extends React.Component {
       console.log('Client: get request failed')
     })
   }
+  
   search (term) {
     console.log(`${term} was searched`);
     
